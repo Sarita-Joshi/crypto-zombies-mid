@@ -26,11 +26,11 @@ const CryptoZombies = () => {
           setUserAccount(accounts[0]);
           const cryptoZombiesContract = new web3Instance.eth.Contract(
             cryptoZombiesABI,
-            '0xA4C9E3EAF9F59053BfBCae88daFaA5728C9A7d07'
+            '0xfB27216E5f3c40eEa70E7154063da784Eb111011'
           );
           const KittyContract = new web3Instance.eth.Contract(
             cryptoZombiesABI,
-            '0xF59D7a790cd265Fed4a3B7658cE74dD51BBc8b89'
+            '0xF79bF3c6a1c89516E3398de50C3eBDd324038165'
           );
 
           // const FeedingContract = new web3Instance.eth.Contract(
@@ -177,66 +177,68 @@ const CryptoZombies = () => {
   // );
 
   return (
-    <div className='bg-gray-900 min-h-screen text-white py-8'>
-      <div className='container mx-auto text-center'>
-        <div className='mb-8'>
-          <input
-            type='text'
-            ref={zombieNameRef}
-            placeholder='Enter Zombie Name'
-            className='text-black mx-2 py-2 px-4 rounded-l-full'
-          />
-          <button
-            className='bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded-r-full shadow-lg'
-            onClick={() => createRandomZombie()}>
-            Create Zombie
-          </button>
-          <button
-            className='bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded-r-full shadow-lg'
-            onClick={() => createKitty()}>
-            Create Kitty
-          </button>
-        </div>
-
-        {status != '' && (
-          <div id='txStatus' className='mb-4'>
-            <p className='text-green-400'>{status}</p>
-          </div>
-        )}
-
-        <div className='flex flex-wrap -mx-3 p-6'>
-          {zombies.map((zombie, index) => (
-            <div key={index} className='w-full md:w-1/3 px-3 mb-6'>
-              <div className='zombie bg-gray-700 hover:bg-gray-600 shadow-lg rounded-lg p-4 flex flex-col items-center transition duration-300 ease-in-out transform hover:-translate-y-1'>
-                <div className='w-44 h-44 mb-4 flex items-center justify-center rounded-full p-2'>
-                  <img
-                    src={`https://robohash.org/${index + zombie.name}?set=set1`}
-                    alt='Zombie'
-                    className='zombie-image object-cover rounded-none'
-                  />
-                </div>
-                <div className='text-left w-full'>
-                  <h2 className='text-lg font-bold mb-1'>
-                    Name: {zombie.name}
-                  </h2>
-                  <p className='text-md'>DNA: {Number(zombie.dna)}</p>
-                  <p className='text-md'>Level: {Number(zombie.level)}</p>
-                  <p className='text-sm mb-4'>
-                    Ready Time:{' '}
-                    {new Date(Number(zombie.readyTime) * 1000).toLocaleString()}
-                  </p>
-                  <button
-                    className='bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline'
-                    onClick={() => levelUp(index)}>
-                    Level Up
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+    <div className='bg-gradient-to-r from-black via-gray-900 to-black min-h-screen text-white py-8'>
+  <div className='container mx-auto text-center'>
+    <div className='mb-8'>
+      <input
+        type='text'
+        ref={zombieNameRef}
+        placeholder='Enter Zombie Name'
+        className='text-black mx-2 py-2 px-4 rounded-l-full shadow-inner'
+      />
+      <button
+        className='bg-teal-600 hover:bg-teal-400 text-white font-bold py-2 px-4 rounded-r-full shadow-lg transition duration-300 ease-in-out'
+        onClick={() => createRandomZombie()}>
+        Create Zombie
+      </button>
+      <button
+        className='bg-teal-600 hover:bg-teal-400 text-white font-bold py-2 px-4 rounded-r-full shadow-lg transition duration-300 ease-in-out ml-2'
+        onClick={() => createKitty()}>
+        Create Kitty
+      </button>
     </div>
+
+    {status !== '' && (
+      <div id='txStatus' className='mb-4'>
+        <p className='text-teal-400 animate-pulse'>{status}</p>
+      </div>
+    )}
+
+    <div className='flex flex-wrap -mx-3 p-6'>
+      {zombies.map((zombie, index) => (
+        <div key={index} className='w-full md:w-1/3 px-3 mb-6'>
+          <div className='zombie bg-black shadow-lg rounded-lg p-4 flex flex-col items-center hover:shadow-teal-500 transition-transform duration-300 hover:scale-105'>
+            <div className='w-44 h-44 mb-4 flex items-center justify-center rounded-full p-2'>
+              <img
+                src={`https://robohash.org/${index + zombie.name}?set=set1`}
+                alt='Zombie'
+                className='zombie-image object-cover rounded-none'
+              />
+            </div>
+            <div className='text-left w-full'>
+              <h2 className='text-lg font-bold text-teal-400 mb-1'>
+                Name: {zombie.name}
+              </h2>
+              <p className='text-md text-gray-300'>DNA: {Number(zombie.dna)}</p>
+              <p className='text-md text-gray-300'>Level: {Number(zombie.level)}</p>
+              <p className='text-sm mb-4 text-gray-500'>
+                Ready Time:{' '}
+                {new Date(Number(zombie.readyTime) * 1000).toLocaleString()}
+              </p>
+              <button
+                className='bg-teal-600 hover:bg-teal-400 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline shadow-lg transition duration-300 ease-in-out'
+                onClick={() => levelUp(index)}>
+                Level Up
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+
   );
 };
 
