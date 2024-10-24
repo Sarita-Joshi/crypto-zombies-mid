@@ -78,6 +78,42 @@ const CryptoZombies = () => {
     fetchZombies(userAccount, cryptoZombies);  // Refresh zombies
   };
 
+    // Update Zombie Name
+    // Update Zombie Name
+const updateZombieName = async (zombieId) => {
+  const newName = prompt('Enter new name for your zombie:', '');
+  if (!newName) {
+    setStatus('Please enter a valid name');
+    return;
+  }
+
+  try {
+    // Call contract method to change the zombie name
+    await cryptoZombies.methods
+      .changeName(zombieId, newName)
+      .send({ from: userAccount });
+
+    // Fetch updated zombies to show the new name on the screen
+    fetchZombies(userAccount, cryptoZombies);
+
+    // Set success message
+    setStatus(`Zombie name updated to ${newName}`);
+  } catch (error) {
+    console.error('Error updating name:', error);
+    setStatus('Failed to update zombie name');
+  }
+};
+
+
+    const updateZombieDNA = async (zombieId) => {
+      const newDna = Math.floor(Math.random() * 10 ** 16);
+      await cryptoZombies.methods
+        .changeDna(zombieId, newDna)
+        .send({ from: userAccount });
+      fetchZombies(userAccount, cryptoZombies);
+      setStatus(`Zombie DNA updated to ${newDna}`);
+    };
+
   const createKitty = async () => {
     const name = kittyNameRef.current.value;
     if (!name) {
@@ -169,11 +205,35 @@ const CryptoZombies = () => {
                     Ready Time:{' '}
                     {new Date(Number(zombie.readyTime) * 1000).toLocaleString()}
                   </p>
-                  <button
+                  {/* <button
                     className='bg-teal-600 hover:bg-teal-400 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline shadow-lg'
                     onClick={() => levelUp(index)}>
                     Level Up
-                  </button>
+                  </button> */}
+                <div className="btn-wrapper flex space-x-2">
+  {/* Level Up Button */}
+  <button
+    className='btn bg-green-500 hover:bg-green-700 text-white font-semibold py-1 px-3 text-sm rounded-full'
+    onClick={() => levelUp(index)}>
+    Level Up
+  </button>
+
+  {/* Update Name Button (Blue) */}
+  <button
+    className='btn bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-3 text-sm rounded-full'
+    onClick={() => updateZombieName(index)}>
+    Update Name
+  </button>
+
+  {/* Update DNA Button (Purple) */}
+  <button
+    className='btn bg-purple-500 hover:bg-purple-700 text-white font-semibold py-1 px-3 text-sm rounded-full'
+    onClick={() => updateZombieDNA(index)}>
+    Update DNA
+  </button>
+</div>
+
+
                 </div>
               </div>
             </div>
