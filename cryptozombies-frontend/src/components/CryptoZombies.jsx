@@ -1,10 +1,7 @@
-const CRYPTO_KITTIES = 'https://api.cryptokitties.co/kitties?limit=8'
-
 import { useState, useEffect, useRef } from 'react';
 import Web3 from 'web3';
 import cryptoZombiesABI from '../cryptozombies_abi.json';
 import './CryptoZombie.css';
-// import { CRYPTO_KITTIES } from "../constants";
 
 const CryptoZombies = () => {
   const [web3, setWeb3] = useState(null);
@@ -105,14 +102,51 @@ const updateZombieName = async (zombieId) => {
 };
 
 
-    const updateZombieDNA = async (zombieId) => {
-      const newDna = Math.floor(Math.random() * 10 ** 16);
-      await cryptoZombies.methods
-        .changeDna(zombieId, newDna)
-        .send({ from: userAccount });
-      fetchZombies(userAccount, cryptoZombies);
-      setStatus(`Zombie DNA updated to ${newDna}`);
-    };
+const updateZombieDNA = async (zombieId, zombieLevel) => {
+  // Check if zombie level is 20 or higher
+  alert('Zombie level should be 20 or higher to update DNA');
+  if (zombieLevel < 20 | 1) {
+    return;
+  }
+
+  if (zombieLevel < 20) {
+    window.scrollTo(0, 0);  // Scroll to the top for the status message
+    alert('Zombie level should be 20 or higher to update DNA');
+    return;
+  }
+
+  // Prompt user to enter a new DNA
+  const dna = prompt('Enter new DNA for your zombie:', '');
+  if (!dna) {
+    setStatus('Please enter a valid DNA');
+    return;
+  }
+
+  try {
+    // Send transaction to update the zombie's DNA
+    const transactionHash = await window.ethereum.request({
+      method: 'eth_sendTransaction',
+      params: [{
+        from: userAccount,
+        to: '0xfB27216E5f3c40eEa70E7154063da784Eb111011',  
+        data: cryptoZombies.methods.changeDna(zombieId, dna).encodeABI(),
+      }]
+    });
+
+    // Log the transaction hash
+    console.log('Transaction Hash:', transactionHash);
+
+    // Fetch updated zombies to show the new DNA on the screen
+    fetchZombies(userAccount, cryptoZombies);
+
+    // Set success message
+    setStatus(`Zombie DNA updated to ${dna}`);
+  } catch (error) {
+    console.error('Error updating DNA:', error);
+    setStatus('Failed to update zombie DNA');
+  }
+};
+
 
   const createKitty = async () => {
     const name = kittyNameRef.current.value;
